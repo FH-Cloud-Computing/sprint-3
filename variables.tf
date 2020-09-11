@@ -11,3 +11,8 @@ variable "exoscale_zone" {
   description = "Exoscale zone"
   default = "at-vie-1"
 }
+variable "exoscale_zone_id" {
+  type = string
+  description = "ID of the exoscale zone"
+  default = "4da1b188-dcd6-4ff5-b7fd-bde984055548"
+}

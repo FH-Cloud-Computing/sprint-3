@@ -1,8 +1,3 @@
-data "exoscale_compute_template" "ubuntu" {
-  zone = var.exoscale_zone
-  name = "Linux Ubuntu 20.04 LTS 64-bit"
-}
-
 resource "exoscale_instance_pool" "autoscaling" {
   name = "autoscaling"
   service_offering = "micro"
@@ -10,7 +5,7 @@ resource "exoscale_instance_pool" "autoscaling" {
   disk_size = 10
   template_id = data.exoscale_compute_template.ubuntu.id
   zone = var.exoscale_zone
-
+  key_pair = "janoszen-desktop"
   security_group_ids = [exoscale_security_group.autoscaling.id]
 
   user_data = <<EOF
