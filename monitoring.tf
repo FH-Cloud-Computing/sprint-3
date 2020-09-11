@@ -66,6 +66,10 @@ cat <<EOCF >/srv/grafana-dashboard.json
 ${file("${path.module}/grafana-dashboard.json")}
 EOCF
 
+cat <<EOCF >/srv/grafana-notifier.yaml
+${file("${path.module}/grafana-notifier.yaml")}
+EOCF
+
 # Create the network
 docker network create monitoring
 
@@ -97,7 +101,18 @@ docker run -d \
     -v /srv/grafana-prometheus.yaml:/etc/grafana/provisioning/datasources/prometheus.yaml \
     -v /srv/grafana-dashboard-provisioner.yaml:/etc/grafana/provisioning/dashboards/filesystem.yaml \
     -v /srv/grafana-dashboard.json:/etc/grafana/dashboards/default.json \
+    -v /srv/grafana-notifier.yaml:/etc/grafana/provisioning/notifiers/autoscaling.yaml \
     -v /srv/grafana/:/var/lib/grafana/ \
     grafana/grafana
+
+docker run -d \
+    -p 8090:8090 \
+    --name autoscaler \
+    --network monitoring \
+    janoszen/exoscale-grafana-autoscaler:1.0.2 \
+    --exoscale-api-key ${var.exoscale_key} \
+    --exoscale-api-secret ${var.exoscale_secret} \
+    --exoscale-zone-id ${var.exoscale_zone_id} \
+    --instance-pool-id ${exoscale_instance_pool.autoscaling.id}
 EOF
 }
