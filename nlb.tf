@@ -20,4 +20,8 @@ resource "exoscale_nlb_service" "autoscaling" {
     timeout = 3
     retries = 1
   }
+
+  depends_on = [
+    exoscale_instance_pool.autoscaling
+  ]
 }
