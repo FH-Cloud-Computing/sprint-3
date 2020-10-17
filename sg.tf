@@ -6,11 +6,12 @@ resource "exoscale_security_group" "autoscaling" {
 resource "exoscale_security_group_rule" "grafana" {
   security_group_id = exoscale_security_group.autoscaling.id
   type = "INGRESS"
-  cidr = "0.0.0.0/0"
+  cidr = var.admin_ip
   start_port = "3000"
   end_port = "3000"
   protocol = "TCP"
   description = "Managed by Terraform!"
+  count = var.admin_ip==""?0:1
 }
 
 resource "exoscale_security_group_rule" "http" {
