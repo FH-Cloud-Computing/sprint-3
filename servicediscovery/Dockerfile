@@ -1,9 +1,12 @@
-import exoscale
+FROM python
 
-if __name__ == "__main__":
-    exo = exoscale.Exoscale(api_key="api-key-here", api_secret="api-secret-here", config_file="")
+WORKDIR /srv
 
-    zone = exo.compute.get_zone("zone-name-here")
+RUN mkdir -p /srv/service-discovery
+VOLUME ["/srv/service-discovery"]
 
-    ip = exo.compute.get_instance_pool("instance-pool-id-here", zone=zone)
-    ip.scale(ip.size + 1)
+COPY requirements.txt /srv/requirements.txt
+RUN pip install -r requirements.txt
+COPY sd.py /srv/sd.py
+
+CMD ["/srv/sd.py"]
