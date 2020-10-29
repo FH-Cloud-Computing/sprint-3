@@ -29,14 +29,14 @@ def service_discovery(exo: Exoscale, zone: Zone, pool_id: str, port: int, file: 
 def loop_service_discovery(
         key: str,
         secret: str,
-        zone: str,
+        zone_name: str,
         pool_id: str,
         port: int,
         file: str
 ):
     exo = exoscale.Exoscale(api_key=key, api_secret=secret, config_file="")
 
-    zone = exo.compute.get_zone(zone)
+    zone = exo.compute.get_zone(zone_name)
 
     failed_sd = 0
     while True:
@@ -49,6 +49,7 @@ def loop_service_discovery(
         except Exception as err:
             pprint.pprint(err)
             failed_sd = failed_sd + 1
+            time.sleep(30)
 
 
 if __name__ == "__main__":
@@ -59,4 +60,5 @@ if __name__ == "__main__":
     target_port = int(os.environ["TARGET_PORT"])
     sd_file = "/srv/service-discovery/config.json"
 
+    print("Starting service discovery")
     loop_service_discovery(api_key, api_secret, api_zone, instance_pool_id, target_port, sd_file)
