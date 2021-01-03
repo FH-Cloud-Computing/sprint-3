@@ -69,7 +69,7 @@ docker run \
     --name sd \
     --network monitoring \
     -v /srv/service-discovery:/var/run/prometheus-sd-exoscale-instance-pools \
-    janoszen/prometheus-sd-exoscale-instance-pools:1.0.0 \
+    quay.io/janoszen/prometheus-sd-exoscale-instance-pools:1.0.0 \
     --exoscale-api-key ${exoscale_key} \
     --exoscale-api-secret ${exoscale_secret} \
     --exoscale-zone-id ${exoscale_zone_id} \
@@ -101,7 +101,7 @@ docker run -d \
     -p 8090:8090 \
     --name autoscaler \
     --network monitoring \
-    janoszen/exoscale-grafana-autoscaler:1.0.2 \
+    quay.io/janoszen/exoscale-grafana-autoscaler:1.0.2 \
     --exoscale-api-key ${exoscale_key} \
     --exoscale-api-secret ${exoscale_secret} \
     --exoscale-zone-id ${exoscale_zone_id} \
