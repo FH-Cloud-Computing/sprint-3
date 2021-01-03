@@ -1,4 +1,4 @@
-FROM python
+FROM python:3.8
 
 WORKDIR /srv
 
@@ -8,5 +8,6 @@ VOLUME ["/srv/service-discovery"]
 COPY requirements.txt /srv/requirements.txt
 RUN pip install -r requirements.txt
 COPY sd.py /srv/sd.py
+RUN chmod +x /srv/sd.py
 
-CMD ["/srv/sd.py"]
+CMD ["python", "/srv/sd.py"]
